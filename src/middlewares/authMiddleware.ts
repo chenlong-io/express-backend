@@ -15,7 +15,11 @@ export interface AuthRequest extends Request {
  * 验证 JWT Token 中间件
  * 检查请求头中的 Authorization 字段，验证 Token 有效性。
  */
-export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+export const verifyToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
@@ -23,7 +27,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as any;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
     (req as AuthRequest).user = decoded;
     next();
   } catch (error) {
@@ -44,7 +48,8 @@ export const requireRole = (role: 'admin' | 'user') => {
     }
 
     // 如果需要 admin 权限，但用户不是 admin，则拒绝
-    if (role === 'admin' && user.role !== 'admin') return next(new AppError('Access denied: Admins only', 403));
+    if (role === 'admin' && user.role !== 'admin')
+      return next(new AppError('Access denied: Admins only', 403));
     next();
   };
 };

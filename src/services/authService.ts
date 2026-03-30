@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { UserRepository } from '../models/userModel';
+import { UserModel } from '../models/userModel';
 import { AppError } from '../utils/AppError';
 
 /**
@@ -10,7 +10,7 @@ import { AppError } from '../utils/AppError';
  */
 @injectable()
 export class AuthService {
-  constructor(@inject(UserRepository) private userRepository: UserRepository) {}
+  constructor(@inject(UserModel) private userModel: UserModel) {}
 
   /**
    * 用户注册
@@ -19,7 +19,7 @@ export class AuthService {
    * @throws AppError 如果用户名已存在
    */
   async register(username: string, password: string): Promise<void> {
-    const existingUser = await this.userRepository.findByUsername(username);
+    const existingUser = await this.userModel.findByUsername(username);
     if (existingUser) {
       throw new AppError('Username already exists', 400);
     }
@@ -27,7 +27,7 @@ export class AuthService {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    await this.userRepository.create({
+    await this.userModel.create({
       username,
       passwordHash,
       role: 'user', // 默认角色为普通用户
@@ -44,8 +44,11 @@ export class AuthService {
   async login(
     username: string,
     password: string,
-  ): Promise<{ token: string; user: { id: number; username: string; role: string } }> {
-    const user = await this.userRepository.findByUsername(username);
+  ): Promise<{
+    token: string;
+    user: { id: number; username: string; role: string };
+  }> {
+    const user = await this.userModel.findByUsername(username);
     if (!user) {
       throw new AppError('Invalid credentials', 401);
     }
@@ -62,7 +65,9 @@ export class AuthService {
     };
 
     // 签发 JWT Token，有效期 1 天
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET!, {
+      expiresIn: '1d',
+    });
 
     return { token, user: payload };
   }
@@ -74,8 +79,12 @@ export class AuthService {
    * @param newPass 新密码
    * @throws AppError 如果旧密码错误或用户不存在
    */
-  async changePassword(userId: number, oldPass: string, newPass: string): Promise<void> {
-    const user = await this.userRepository.findById(userId);
+  async changePassword(
+    userId: number,
+    oldPass: string,
+    newPass: string,
+  ): Promise<void> {
+    const user = await this.userModel.findById(userId);
     if (!user) {
       throw new AppError('User not found', 404);
     }
@@ -88,6 +97,6 @@ export class AuthService {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(newPass, salt);
 
-    await this.userRepository.update(userId, { passwordHash });
+    await this.userModel.update(userId, { passwordHash });
   }
 }

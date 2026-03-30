@@ -12,14 +12,18 @@ export type User = typeof users.$inferSelect;
  * 负责与 users 表进行直接的数据交互。
  */
 @injectable()
-export class UserRepository {
+export class UserModel {
   /**
    * 根据用户名查找用户
    * @param username 用户名
    * @returns 找到的用户对象或 undefined
    */
   async findByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username)).limit(1);
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, username))
+      .limit(1);
     return user;
   }
 
@@ -29,7 +33,11 @@ export class UserRepository {
    * @returns 找到的用户对象或 undefined
    */
   async findById(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, id))
+      .limit(1);
     return user;
   }
 

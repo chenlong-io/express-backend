@@ -4,7 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon",
+    "build": "tsc",
+    "format": "prettier --write .",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "pm2:start": "pm2 start ecosystem.config.js --env production",
+    "pm2:stop": "pm2 stop ship-track-backend",
+    "pm2:restart": "pm2 restart ship-track-backend",
+    "pm2:reload": "pm2 reload ship-track-backend",
+    "pm2:delete": "pm2 delete ship-track-backend",
+    "pm2:list": "pm2 list",
+    "pm2:logs": "pm2 logs ship-track-backend",
+    "pm2:monit": "pm2 monit"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +35,7 @@
     "morgan": "^1.10.1",
     "multer": "^2.1.1",
     "mysql2": "^3.20.0",
+    "pm2": "^6.0.14",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.10.0",
     "zod": "^4.3.6"
@@ -35,6 +50,7 @@
     "@types/node": "^25.5.0",
     "drizzle-kit": "^0.31.10",
     "nodemon": "^3.1.14",
+    "prettier": "^3.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.2"
   }

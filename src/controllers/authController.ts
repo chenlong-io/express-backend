@@ -17,6 +17,7 @@ export class AuthController {
    */
   register = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log('object :>> ', req.body);
       const { username, password } = req.body;
       await this.authService.register(username, password);
       res.status(201).json({ message: '注册成功' });

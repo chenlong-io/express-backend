@@ -16,6 +16,13 @@ app.use(morgan('dev'));
 // Routes
 app.use('/auth', authRoutes);
 
+// Health Check
+app.post('/health', (req, res) => {
+    console.log('object :>> ', req.body);
+  res.status(200).json({ status: 'ok' });
+});
+
+
 // 全局错误处理
 app.use(errorHandler);
 
