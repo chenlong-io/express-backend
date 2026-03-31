@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { injectable, inject } from 'tsyringe';
-import { AuthService } from '../services/authService';
-import { AuthRequest } from '../middlewares/authMiddleware';
+import { AuthService } from './auth.service';
+import { AuthRequest } from '@/middlewares/authMiddleware';
 
 /**
  * 认证控制器
@@ -17,7 +17,6 @@ export class AuthController {
    */
   register = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('object :>> ', req.body);
       const { username, password } = req.body;
       await this.authService.register(username, password);
       res.status(201).json({ message: '注册成功' });

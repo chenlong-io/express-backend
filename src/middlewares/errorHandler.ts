@@ -7,31 +7,32 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
-      status: 'error',
-      message: err.message,
-    });
-  }
-
-  console.error('意外错误:', err);
+  const statusCode = err instanceof AppError ? err.statusCode : 500;
+  const businessCode = err instanceof AppError ? err.businessCode : 500;
+  const message = err.message || 'Internal Server Error';
 
   const response: any = {
-    status: 'error',
-    message: 'Internal Server Error',
+    code: businessCode,
+    message: message,
+    data: null,
   };
 
   if (process.env.NODE_ENV === 'development') {
-    response.stack = err.stack;
-    // Inspect properties safely
-    response.error = {
-      ...err,
-      name: err.name,
-      message: err.message,
-      // @ts-ignore
-      code: err.code,
+    response.data = {
+      stack: err.stack,
+      error: {
+        ...err,
+        name: err.name,
+        message: err.message,
+        // @ts-ignore
+        code: err.code,
+      },
     };
   }
 
-  return res.status(500).json(response);
+  if (!(err instanceof AppError)) {
+    console.error('意外错误:', err);
+  }
+
+  return res.status(statusCode).json(response);
 };

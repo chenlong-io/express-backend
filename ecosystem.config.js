@@ -1,6 +1,6 @@
 module.exports = {
-  apps : [
-     {
+  apps: [
+    {
       name: 'express-backend',
       script: './dist/main.js',
       instances: 'max',
@@ -17,5 +17,5 @@ module.exports = {
       out_file: 'logs/out.log',
       merge_logs: true,
     },
-  ]
+  ],
 };

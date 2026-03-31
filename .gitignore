@@ -114,3 +114,5 @@ dist
 
 .agent
 pnpm-lock.yaml
+
+drizzle/

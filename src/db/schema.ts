@@ -5,7 +5,6 @@ import {
   timestamp,
   mysqlEnum,
 } from 'drizzle-orm/mysql-core';
-import { sql } from 'drizzle-orm';
 
 /**
  * 用户表 (users)
@@ -16,8 +15,6 @@ export const users = mysqlTable('users', {
   username: varchar('username', { length: 255 }).notNull().unique(), // 用户名，必须唯一
   passwordHash: varchar('password_hash', { length: 255 }).notNull(), // 加密后的密码
   role: mysqlEnum('role', ['admin', 'user']).notNull().default('user'), // 用户角色：管理员或普通用户
-  createdAt: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`), // 创建时间
-  updatedAt: timestamp('updated_at').default(
-    sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`,
-  ), // 更新时间
+  createdAt: timestamp('created_at').defaultNow(), // 创建时间
+  updatedAt: timestamp('updated_at').onUpdateNow(), // 更新时间
 });

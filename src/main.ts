@@ -1,5 +1,6 @@
+import '@/config/env';
 import 'reflect-metadata';
-import app from './app';
+import app from '@/app';
 
 const startServer = async () => {
   try {
@@ -14,4 +15,4 @@ const startServer = async () => {
   }
 };
 
-startServer()
+startServer();

@@ -1,7 +1,7 @@
 import { injectable } from 'tsyringe';
 import { eq } from 'drizzle-orm';
-import { db } from '../db/db';
-import { users } from '../db/schema';
+import { db } from '@/db/db';
+import { users } from '@/db/schema';
 
 // 导出用户插入类型和选择类型辅助类型
 export type NewUser = typeof users.$inferInsert;
@@ -12,7 +12,7 @@ export type User = typeof users.$inferSelect;
  * 负责与 users 表进行直接的数据交互。
  */
 @injectable()
-export class UserModel {
+export class AuthModel {
   /**
    * 根据用户名查找用户
    * @param username 用户名

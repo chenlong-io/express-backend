@@ -5,19 +5,19 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "format": "prettier --write .",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "pm2:start": "pm2 start ecosystem.config.js --env production",
-    "pm2:stop": "pm2 stop ship-track-backend",
-    "pm2:restart": "pm2 restart ship-track-backend",
-    "pm2:reload": "pm2 reload ship-track-backend",
-    "pm2:delete": "pm2 delete ship-track-backend",
+    "pm2:stop": "pm2 stop express-backend",
+    "pm2:restart": "pm2 restart express-backend",
+    "pm2:reload": "pm2 reload express-backend",
+    "pm2:delete": "pm2 delete express-backend",
     "pm2:list": "pm2 list",
-    "pm2:logs": "pm2 logs ship-track-backend",
+    "pm2:logs": "pm2 logs express-backend",
     "pm2:monit": "pm2 monit"
   },
   "keywords": [],
@@ -52,6 +52,8 @@
     "nodemon": "^3.1.14",
     "prettier": "^3.8.1",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.2"
   }
 }

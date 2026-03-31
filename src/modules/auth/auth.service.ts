@@ -1,8 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { UserModel } from '../models/userModel';
-import { AppError } from '../utils/AppError';
+import { AuthModel } from './auth.model';
+import { AppError } from '@/utils/AppError';
 
 /**
  * 认证服务类
@@ -10,7 +10,7 @@ import { AppError } from '../utils/AppError';
  */
 @injectable()
 export class AuthService {
-  constructor(@inject(UserModel) private userModel: UserModel) {}
+  constructor(@inject(AuthModel) private userModel: AuthModel) {}
 
   /**
    * 用户注册
@@ -21,7 +21,8 @@ export class AuthService {
   async register(username: string, password: string): Promise<void> {
     const existingUser = await this.userModel.findByUsername(username);
     if (existingUser) {
-      throw new AppError('Username already exists', 400);
+      // 使用 HTTP 400 状态码，业务错误码 10001
+      throw new AppError('用户名已存在', 400, 10001);
     }
 
     const salt = await bcrypt.genSalt(10);
